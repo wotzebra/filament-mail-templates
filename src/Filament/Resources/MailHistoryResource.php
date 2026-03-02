@@ -2,11 +2,14 @@
 
 namespace Wotz\FilamentMailTemplates\Filament\Resources;
 
+use BackedEnum;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
 use Wotz\FilamentMailTemplates\Filament\Resources\MailHistoryResource\Pages;
 use Wotz\FilamentMailTemplates\Models\MailHistory;
 
@@ -14,7 +17,7 @@ class MailHistoryResource extends Resource
 {
     protected static ?string $model = MailHistory::class;
 
-    public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): string|UnitEnum|null
     {
         return config(
             'filament-mail-templates.navigation.history.group',
@@ -22,7 +25,7 @@ class MailHistoryResource extends Resource
         );
     }
 
-    public static function getNavigationIcon(): string
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
     {
         return config(
             'filament-mail-templates.navigation.history.icon',
@@ -108,10 +111,10 @@ class MailHistoryResource extends Resource
                 Filter::make('to_email')
                     ->label(__('filament-mail-templates::admin.to email')),
             ])
-            ->actions([
+            ->recordActions([
                 \Filament\Actions\ViewAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 \Filament\Actions\DeleteBulkAction::make(),
             ])
             ->defaultSort('created_at', 'desc');
