@@ -2,6 +2,7 @@
 
 namespace Wotz\FilamentMailTemplates\Filament\Resources;
 
+use BackedEnum;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -10,6 +11,8 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
 use Wotz\FilamentMailTemplates\Facades\MailTemplateFallbacks;
 use Wotz\FilamentMailTemplates\Filament\Resources\MailTemplateResource\Pages;
 use Wotz\FilamentMailTemplates\Models\MailTemplate;
@@ -21,7 +24,7 @@ class MailTemplateResource extends Resource
 {
     protected static ?string $model = MailTemplate::class;
 
-    public static function getNavigationGroup(): ?string
+    public static function getNavigationGroup(): string|UnitEnum|null
     {
         return config(
             'filament-mail-templates.navigation.templates.group',
@@ -29,7 +32,7 @@ class MailTemplateResource extends Resource
         );
     }
 
-    public static function getNavigationIcon(): string
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
     {
         return config(
             'filament-mail-templates.navigation.templates.icon',
@@ -139,7 +142,7 @@ class MailTemplateResource extends Resource
 
                 LocalesColumn::make('online'),
             ])
-            ->actions([
+            ->recordActions([
                 \Filament\Actions\Action::make('preview')
                     ->url(fn (MailTemplate $record) => self::getUrl('preview', [$record]))
                     ->label(__('filament-mail-templates::preview.button label'))
