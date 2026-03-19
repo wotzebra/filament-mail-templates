@@ -3,12 +3,16 @@
 namespace Wotz\FilamentMailTemplates\Filament\Resources;
 
 use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
@@ -48,7 +52,7 @@ class MailTemplateResource extends Resource
         );
     }
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema->components([
             TranslatableTabs::make()
@@ -63,7 +67,7 @@ class MailTemplateResource extends Resource
                         ->label(__('filament-mail-templates::admin.description'))
                         ->state(fn (MailTemplate $record) => $record->description),
 
-                    \Filament\Schemas\Components\Grid::make()->schema([
+                    Grid::make()->schema([
                         TextInput::make('from_name')
                             ->label(__('filament-mail-templates::admin.from name'))
                             ->helperText(
@@ -90,7 +94,7 @@ class MailTemplateResource extends Resource
                         )
                         ->hidden(fn (MailTemplate $record) => ! $record->getMailTemplate()->hasTargetField())
                         ->schema([
-                            \Filament\Schemas\Components\Grid::make()->schema([
+                            Grid::make()->schema([
                                 TextInput::make('email')
                                     ->label(__('filament-mail-templates::admin.email'))
                                     ->required(),
@@ -107,8 +111,8 @@ class MailTemplateResource extends Resource
                         ]),
                 ])
                 ->translatableFields(fn (string $locale) => [
-                    \Filament\Schemas\Components\Grid::make(3)->schema([
-                        \Filament\Schemas\Components\Grid::make(1)
+                    Grid::make(3)->schema([
+                        Grid::make(1)
                             ->columnSpan(['lg' => 2])
                             ->schema([
                                 TextInput::make('subject')
@@ -143,12 +147,12 @@ class MailTemplateResource extends Resource
                 LocalesColumn::make('online'),
             ])
             ->recordActions([
-                \Filament\Actions\Action::make('preview')
+                Action::make('preview')
                     ->url(fn (MailTemplate $record) => self::getUrl('preview', [$record]))
                     ->label(__('filament-mail-templates::preview.button label'))
                     ->icon('heroicon-o-eye'),
 
-                \Filament\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->defaultSort('identifier');
     }

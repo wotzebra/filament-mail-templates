@@ -2,7 +2,9 @@
 
 namespace Wotz\FilamentMailTemplates\Facades;
 
-class MailTemplateCollection extends \Illuminate\Support\Facades\Facade
+use Illuminate\Support\Facades\Facade;
+
+class MailTemplateCollection extends Facade
 {
     protected static function getFacadeAccessor(): string
     {

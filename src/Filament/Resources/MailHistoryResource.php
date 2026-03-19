@@ -3,8 +3,13 @@
 namespace Wotz\FilamentMailTemplates\Filament\Resources;
 
 use BackedEnum;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
@@ -41,11 +46,11 @@ class MailHistoryResource extends Resource
         );
     }
 
-    public static function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
+    public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                \Filament\Schemas\Components\Section::make('Recipients')->schema([
+                Section::make('Recipients')->schema([
                     TextEntry::make('to_email')
                         ->label(__('filament-mail-templates::admin.to email'))
                         ->state(fn ($record) => implode(', ', $record->to_emails)),
@@ -66,8 +71,8 @@ class MailHistoryResource extends Resource
                         'record' => $record,
                     ])),
 
-                \Filament\Schemas\Components\Section::make('Debug data')->schema([
-                    \Filament\Schemas\Components\Grid::make()->schema([
+                Section::make('Debug data')->schema([
+                    Grid::make()->schema([
                         TextEntry::make('created_at')
                             ->label(__('filament-mail-templates::admin.created at'))
                             ->state(fn ($record) => $record->created_at->format('Y-m-d H:i:s')),
@@ -112,10 +117,10 @@ class MailHistoryResource extends Resource
                     ->label(__('filament-mail-templates::admin.to email')),
             ])
             ->recordActions([
-                \Filament\Actions\ViewAction::make(),
+                ViewAction::make(),
             ])
             ->toolbarActions([
-                \Filament\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ])
             ->defaultSort('created_at', 'desc');
     }
