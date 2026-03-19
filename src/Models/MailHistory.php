@@ -35,7 +35,7 @@ class MailHistory extends Model
         'locale',
     ];
 
-    public $casts = [
+    protected $casts = [
         'to_emails' => 'array',
         'cc_emails' => 'array',
         'bcc_emails' => 'array',
@@ -46,7 +46,7 @@ class MailHistory extends Model
         return $this->belongsTo(MailTemplate::class, 'mail_template_id');
     }
 
-    public static function booted()
+    public static function booted(): void
     {
         static::addGlobalScope('sorting', function ($query) {
             $query->orderBy('created_at', 'desc');
