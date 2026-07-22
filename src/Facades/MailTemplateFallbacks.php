@@ -2,9 +2,11 @@
 
 namespace Wotz\FilamentMailTemplates\Facades;
 
-class MailTemplateFallbacks extends \Illuminate\Support\Facades\Facade
+use Illuminate\Support\Facades\Facade;
+
+class MailTemplateFallbacks extends Facade
 {
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return \Wotz\FilamentMailTemplates\MailTemplateFallbacks::class;
     }
